@@ -55,6 +55,10 @@
                         e.g. due to the size of the alphabet or the use of grapheme clusters which make it difficult to design an intuitive keyboard layout. 
                         And nowadays more and more large mobile devices with styluses are becoming available, such as the iPad Pro , Microsoft Surface devices , 
                         and Chromebooks with styluses. 
+                    </p><br/>
+                    <p>
+                        Here the implementation of “A novel approach to on-line handwriting recognition based on bidirectional long short-term memory 
+                        networks” and the obtained results has been discussed.
                     </p>
                 </div>
                 <div class="row">
@@ -80,44 +84,55 @@
                         per second. 
                     </p>
                     <p>
-                        The data is divided into four sets(Training set, validation set, test set 1, test set 2) 
-                        in a ratio of 6:2:1:1.
+                        The IAM online handwriting data can be downloaded from <a href="http://www.fki.inf.unibe.ch/databases/iam-on-line-handwriting-database" target="_blanl">here</a>
                     </p>
                     </div>
-                    <h3><b>1.1: Input features</b></h3>
-                        <ol>
-                            <li><b>Pen-up/pen-down:</b> a boolean variable indicating whether or not the pen-tip touches the board.</li>
-                            <li><b>Hat-feature:</b> this feature indicates if a delayed stroke was removed at the considered horizontal position.</li>
-                            <li><b>Speed:</b> the velocity at point pi is computed before resampling and then interpolated.</li>
-                            <li><b>X-coordinate:</b> the x-position of point pi is taken after high-pass filtering (subtracting a moving average)</li>
-                            <li><b>Y-coordinate:</b> the vertical position after normalisation</li>
-                            <li><b>Writing direction:</b> the cosine and sine of the angle between the line segment starting at pi and the x-axis.</li>
-                            <li><b>Curvature:</b> the cosine and sine of the angle between the lines to the previous and the next point.</li>
-                            <li><b>Vicinity slope:</b> cosine and sine of the angle α(t) of the straight line from the first to the last vicinity point.</li>
-                            <li><b>Vicinity curliness:</b> the length of the trajectory in the vicinity divided by max(∆x(t), ∆y(t)).</li>
-                            <li><b>Vicinity linearity:</b> the average square distance d 2 of each point in the vicinity to the straight line from the first to the last vicinity point.</li>
-                          </ol> 
+                        <p>
+                            The dataset is further divided into four sets(Training set, validation set, test set 1, test set 2) 
+                            in a ratio of 6:2:1:1.
+                        </p>
                 </div>    
                 <div class="row">
-                    <h2> <b>2: Model:</b> </h2>
+                    <h2> <b>2: Model Architecture:</b> </h2>
                     <p>
-                            The model has two layers of Bi-directional LSTM having the same no of cells in both 
+                            The model takes a matrix of size 1940x40 as input. The model has two layers of Bi-directional LSTM having the same no of cells in both 
                             forward and backward direction. Each layer of BLSTM has 64 cells. The output of second BLSTM layer 
-                            has been feeded into a dense layer having a softmax activation. To train the network CTC loss has been used.
-                    </p>
+                            has been feeded into a dense layer of size 64(63 characters and one CTC blank) having a softmax activation. To train the network CTC loss has been used.
+                    </p><br/>
                     <p>
-                            The network was trained with online gradient descent with momentum, using a 
-                            learning rate of 1e−4 and a momentum of 0.9. Training was stopped when performance ceased to improve on the validation set. 
+                            The network weights were initialized with a Gaussian distribution of mean 0 and std. deviation 0.1. The network was trained with online gradient descent with momentum, using a 
+                            learning rate of 1e−4 and a momentum of 0.9. 
                     </p>
+                    <h3><b>2.1: Input features</b></h3>
+                    <ol>
+                        <li><b>Pen-up/pen-down:</b> a boolean variable indicating whether or not the pen-tip touches the board.</li>
+                        <li><b>Hat-feature:</b> this feature indicates if a delayed stroke was removed at the considered horizontal position.</li>
+                        <li><b>Speed:</b> the velocity at point pi is computed before resampling and then interpolated.</li>
+                        <li><b>X-coordinate:</b> the x-position of point pi is taken after high-pass filtering (subtracting a moving average)</li>
+                        <li><b>Y-coordinate:</b> the vertical position after normalisation</li>
+                        <li><b>Writing direction:</b> the cosine and sine of the angle between the line segment starting at pi and the x-axis.</li>
+                        <li><b>Curvature:</b> the cosine and sine of the angle between the lines to the previous and the next point.</li>
+                        <li><b>Vicinity slope:</b> cosine and sine of the angle α(t) of the straight line from the first to the last vicinity point.</li>
+                        <li><b>Vicinity curliness:</b> the length of the trajectory in the vicinity divided by max(∆x(t), ∆y(t)).</li>
+                        <li><b>Vicinity linearity:</b> the average square distance d 2 of each point in the vicinity to the straight line from the first to the last vicinity point.</li>
+                        </ol> <br/>
                     <center>
-                    <figure>
-                        <img src="Grave_2007.png" alt="Trulli" style="width:40%">
-                        <figcaption>Fig.2 - BLSTM model for online HTR.</figcaption>
-                    </figure>
+                        <figure>
+                            <img src="Grave_2007.png" alt="Trulli" style="width:40%">
+                            <figcaption>Fig.2 - BLSTM model for online HTR.</figcaption>
+                        </figure>
                     </center>
+                    <h3><b>2.2: Decoding</b></h3>
+                    <p>
+                        The output of the softmax layer is a sequence of T time steps of (C + 1) classes that were decoded using CTC decoding.
+                    </p>
                 </div>
                 <div class="row">
                         <h2> <b>3: Results:</b> </h2>
+                        <p>
+                                Training was stopped when performance ceased to improve on the validation set(98 epochs in our case). Reduction in loss can be seen in Fig:2.  
+                                After training the model was evaluated on the Test dataset, the model performs with a character error rate of ~35%.
+                        </p>
                         <center>
                         <figure>
                                 <img src="Grave_training_graph.png" alt="Trulli" style="width:40%">
