@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>A novel approach to on-line handwriting recognition based on bidirectional long short-term memory networks</title>
+        <link href="https://fonts.googleapis.com/css?family=Raleway|Yesteryear" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../css/bootswatch.css"/>
+        <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    </head>
+    <style>
+            table, td, th {  
+              border: 1px solid #ddd;
+              text-align: left;
+            }
+            
+            table {
+              border-collapse: collapse;
+              width: 70%;
+            }
+            
+            th, td {
+              padding: 15px;
+            }
+    </style>
+
+    <body>
+        <div class="container">
+            <header>
+                <nav class="navbar navbar-default navbar-fixed-top">
+                    <div class="container">
+                        
+                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a class="navbar-brand" href="#"><i class="fa fa-home" aria-hidden="true"></i>&nbsp;Home</a></li>
+                        </ul>
+                        
+                        </div>
+                    </div>
+                </nav>
+            </header>
+
+            <main>
+               <div>
+                   <h1><b>Implementation of “A novel approach to on-line handwriting recognition based on bidirectional long short-term memory 
+                        networks” by Alex Graves et al.</b>
+                   </h1>
+                </div>
+                <div class="row">
+                    <div>
+                    <h2> <b>1: Dataset:</b> </h2>
+                    <p>
+                        To train the online handwriting recognition system IAM-on-DB has been used which has writing samples
+                        from 221 writers. The dataset has 13,049 lines of text which has 86,272 word instances and 
+                        forms a vocabulary of length 11,059. 
+                    </p><br/>
+                    <center>
+                    <figure>
+                      <img src="../img/IAM_recording.jpeg" alt="Trulli" style="width:30%">
+                      <figcaption>Fig.1 - Illustration of IAM-on-DB data recording.</figcaption>
+                    </figure> <br/>
+                    </center>
+                    <p>
+                        The eBeam interface2 is used for recording the handwriting. It allows the user to 
+                        write on a whiteboard with a normal pen in a special casing, which sends infrared signals to 
+                        a triangular receiver mounted in one of the corners of the whiteboard. The acquisition interface 
+                        outputs a sequence of (x,y)-coordinates representing the location of the tip of the pen together 
+                        with a time stamp for each location. The frame rate of the recordings varies from 30 to 70 frames 
+                        per second. 
+                    </p>
+                    <p>
+                        The data is divided into four sets(Training set, validation set, test set 1, test set 2) 
+                        in a ratio of 6:2:1:1.
+                    </p>
+                    </div>
+                    <h3><b>1.1: Input features</b></h3>
+                        <ol>
+                            <li><b>Pen-up/pen-down:</b> a boolean variable indicating whether or not the pen-tip touches the board.</li>
+                            <li><b>Hat-feature:</b> this feature indicates if a delayed stroke was removed at the considered horizontal position.</li>
+                            <li><b>Speed:</b> the velocity at point pi is computed before resampling and then interpolated.</li>
+                            <li><b>X-coordinate:</b> the x-position of point pi is taken after high-pass filtering (subtracting a moving average)</li>
+                            <li><b>Y-coordinate:</b> the vertical position after normalisation</li>
+                            <li><b>Writing direction:</b> the cosine and sine of the angle between the line segment starting at pi and the x-axis.</li>
+                            <li><b>Curvature:</b> the cosine and sine of the angle between the lines to the previous and the next point.</li>
+                            <li><b>Vicinity slope:</b> cosine and sine of the angle α(t) of the straight line from the first to the last vicinity point.</li>
+                            <li><b>Vicinity curliness:</b> the length of the trajectory in the vicinity divided by max(∆x(t), ∆y(t)).</li>
+                            <li><b>Vicinity linearity:</b> the average square distance d 2 of each point in the vicinity to the straight line from the first to the last vicinity point.</li>
+                          </ol> 
+                </div>    
+                <div class="row">
+                    <h2> <b>2: Model:</b> </h2>
+                    <p>
+                            The model has two layers of Bi-directional LSTM having the same no of cells in both 
+                            forward and backward direction. Each layer of BLSTM has 64 cells. The output of second BLSTM layer 
+                            has been feeded into a dense layer having a softmax activation. To train the network CTC loss has been used.
+                    </p>
+                    <p>
+                            The network was trained with online gradient descent with momentum, using a 
+                            learning rate of 1e−4 and a momentum of 0.9. Training was stopped when performance ceased to improve on the validation set. 
+                    </p>
+                    <center>
+                    <figure>
+                        <img src="../img/Grave_2007.png" alt="Trulli" style="width:40%">
+                        <figcaption>Fig.2 - BLSTM model for online HTR.</figcaption>
+                    </figure>
+                    </center>
+                </div>
+                <div class="row">
+                        <h2> <b>3: Results:</b> </h2>
+                        <center>
+                        <figure>
+                                <img src="../img/Grave_training_graph.png" alt="Trulli" style="width:40%">
+                                <figcaption>Fig.3 - Training graph of HTR model.</figcaption>
+                        </figure>
+                        </center>
+                        <h3><b>3.1: Comparision with previous works</b></h3>
+                        <center>
+                                <table>
+                                    <tr>
+                                        <th>System</th>
+                                        <th>CER[%]</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Frinken et al. BLSTM - 2015</td>
+                                        <td>12.3</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Graves et al. BLSTM - 2009</td>
+                                        <td>11.5</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Keysers et al. BLSTM - 2017</td>
+                                        <td>8.8</td>
+                                    </tr>
+                                    <tr>
+                                        <td>this implementation</td>
+                                        <td>34.5</td>
+                                    </tr>
+                                </table>
+                        </center>
+
+                        <h3> <b>3.2: Model output samples:</b> </h3>
+                        <center>
+                                <table>
+                                    <tr>
+                                        <th>Ground truth</th>
+                                        <th>Model Output</th>
+                                    </tr>
+                                    <tr>
+                                        <td>and now was a digniflied discreet</td>
+                                        <td>and how wal d aguitud  rrdereet</td>
+                                    </tr>
+                                    <tr>
+                                        <td>hand After all he reflected</td>
+                                        <td>hand A5ter all he reflected</td>
+                                    </tr>
+                                    <tr>
+                                        <td>with a deadly finality</td>
+                                        <td>htth odedar thodty</td>
+                                    </tr>
+                                    <tr>
+                                        <td>had sent a letter to Mr Kennedy saying</td>
+                                        <td>had seut altertor Ruhedy say in</td>
+                                    </tr>
+                                </table>
+                        </center>
+                </div>
+                <div class="row">
+                        <h2> <b>4: References:</b> </h2>
+                        <ol>
+                            <li>Liwicki, Marcus, et al. "A novel approach to on-line handwriting recognition based on bidirectional long short-term memory networks." Proceedings of the 9th International Conference on Document Analysis and Recognition, ICDAR 2007. 2007.</li>	
+                            <li>Frinken, Volkmar, and Seiichi Uchida. "Deep BLSTM neural networks for unconstrained continuous handwritten text recognition." 2015 13th International Conference on Document Analysis and Recognition (ICDAR). IEEE, 2015.</li>
+                            <li>Graves, Alex, et al. "A novel connectionist system for unconstrained handwriting recognition." IEEE transactions on pattern analysis and machine intelligence 31.5 (2008): 855-868.</li>
+                            <li>Keysers, Daniel, et al. "Multi-language online handwriting recognition." IEEE transactions on pattern analysis and machine intelligence 39.6 (2016): 1180-1194.</li>
+                        </ol>  
+                              
+                </div>
+            </main>
+
+            <footer>
+                
+            </footer>
+        </div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        
+        <script src="js/script.js"></script>
+    </body>
+</html>

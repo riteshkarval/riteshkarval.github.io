@@ -1,0 +1,70 @@
+body{
+    font-family: 'Raleway', sans-serif;
+    font-size: 1.5em;  
+    padding-top: 70px;
+}
+
+a{
+	text-decoration: none;
+}
+
+#leftArea{
+    padding: 20px;
+    text-align: center;
+}
+
+#rightArea{
+    padding: 30px;
+    text-align: justify;
+}
+
+#dp{
+    padding:20px;
+}
+
+/*#image{
+    border:2px dotted lightgray;
+}
+*/
+#name{
+    font-family: 'Yesteryear', cursive;
+    /*font-weight: bold;*/
+    font-size: 300%;
+}
+
+#sendMail{
+    padding: 30px;
+}
+
+footer{
+    padding:20px;
+}
+
+.heading{
+    font-weight: bold;
+}
+
+#contactDiv, #projectsDiv, #interestsDiv{
+    padding-top: 50px;
+}
+
+
+#panelFooter{
+	background-color: #EDECEB;	
+}
+
+/*Modifying primary class of panel*/
+
+.panel-primary>.panel-heading {
+    color: #ffffff;
+    background-color: #222222;
+    border-color: #222222;
+}
+
+.panel-primary {
+    border-color: #222222;
+}
+
+.panel-primary>.panel-heading+.panel-collapse>.panel-body {
+    border-top-color: #222222;
+}
