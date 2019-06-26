@@ -58,7 +58,7 @@
                     </p><br/>
                     <p>
                         Here the implementation of “A novel approach to on-line handwriting recognition based on bidirectional long short-term memory 
-                        networks” and the obtained results has been discussed. In the followinf sections dataset, model architecture and results has been discussed. 
+                        networks” and the obtained results has been discussed. In the following sections dataset, model architecture and results has been discussed. 
                     </p>
                 </div>
                 <div class="row">
@@ -95,9 +95,9 @@
                 <div class="row">
                     <h2> <b>2: Model Architecture:</b> </h2>
                     <p>
-                            The model takes a matrix of size 1940x40 as input. The model has two layers of Bi-directional LSTM having the same no of cells in both 
+                            The model takes a matrix of size 1942x10 as input(1942 is maximum timesteps for a line and 10 is the length of feature vector). The model has two layers of Bi-directional LSTM having the same no of cells in both 
                             forward and backward direction. Each layer of BLSTM has 64 cells. The output of second BLSTM layer 
-                            has been feeded into a dense layer of size 64(63 characters and one CTC blank) having a softmax activation. To train the network CTC loss has been used.
+                            has been feeded into a dense layer of size 64(63 characters and one CTC blank) having a softmax activation. To measure the network performance CTC loss has been used.
                     </p><br/>
                     <p>
                             The network weights were initialized with a Gaussian distribution of mean 0 and std. deviation 0.1. The network was trained with online gradient descent with momentum, using a 
@@ -130,7 +130,7 @@
                 <div class="row">
                         <h2> <b>3: Results:</b> </h2>
                         <p>
-                                Training was stopped when performance ceased to improve on the validation set(98 epochs in our case). Reduction in loss can be seen in Fig:2.  
+                                <t>Training was stopped when performance ceased to improve on the validation set(96 epochs in our case). Reduction in loss can be seen in Fig:2.  
                                 After training the model was evaluated on the Test dataset, the model performs with a character error rate of ~35%.
                         </p>
                         <center>
@@ -140,11 +140,21 @@
                         </figure>
                         </center>
                         <h3><b>3.1: Comparision with recent works</b></h3>
+                        <p>
+                            After training the model for 96, character error rate of ~35% has been achieved. Beyond 96 epochs the model find to be overfit on the training
+                            data as the training was decreasing but validation loss was increasing. In 2019 Goolge has reported the lowest character error rate on IAM-On-DB i.e.
+                            4.02 and introduced the importance of Bezier Curve in online handwriting recognition. Below is the comparison of this implementation with the recent 
+                            benchmarks on IAM-On-DB. 
+                        </p>
                         <center>
                                 <table>
                                     <tr>
                                         <th>System</th>
                                         <th>CER[%]</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Graves et al. BLSTM - 2007</td>
+                                        <td>~15</td>
                                     </tr>
                                     <tr>
                                         <td>Graves et al. BLSTM - 2009</td>
@@ -170,6 +180,10 @@
                         </center>
 
                         <h3> <b>3.2: Model output samples:</b> </h3>
+                        <p>
+                            After training the model was tested on the test dataset, the model's softmax output was feeded inito CTC decoder for decoding. Here are some 
+                            predictions made by model on the test dataset. 
+                        </p>
                         <center>
                                 <table>
                                     <tr>
@@ -196,7 +210,20 @@
                         </center>
                 </div>
                 <div class="row">
-                        <h2> <b>4: References:</b> </h2>
+                    <h2> <b>4: Conclusion and future work:</b> </h2>
+                    <p>
+                        Here an attempt to reproduce the results of "A novel approach to on-line handwriting recognition based on bidirectional long short-term memory networks."
+                        has been taken. However, the lowest CER acheived from this implementation is still too far from the original work. This may be happen due to the model 
+                        got stuck into the local minima. Training the model for further more epochs may give the better performance as 96 epochs is still a small number for training 
+                        a online handwriting recognition model. 
+                    </p>
+                    <p>
+                        Further improvements can be mode by adding a character and wrod level language model to the system. As described in "Fast Multi-language LSTM-based Online Handwriting Recognition."
+                        Bezier curve will also help to improve the recognition. 
+                    </p>
+                </div>
+                <div class="row">
+                        <h2> <b>5: References:</b> </h2>
                         <ol>
                             <li>Liwicki, Marcus, et al. "A novel approach to on-line handwriting recognition based on bidirectional long short-term memory networks." Proceedings of the 9th International Conference on Document Analysis and Recognition, ICDAR 2007. 2007.</li>	
                             <li>Frinken, Volkmar, and Seiichi Uchida. "Deep BLSTM neural networks for unconstrained continuous handwritten text recognition." 2015 13th International Conference on Document Analysis and Recognition (ICDAR). IEEE, 2015.</li>
