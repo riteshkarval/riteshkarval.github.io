@@ -39,6 +39,13 @@ a{
 footer{
     padding:20px;
 }
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.212);
+    padding: 16px;
+    text-align: left;
+    background-color:#f1f1f167;
+    width: 100%;
+  }
 
 .heading{
     font-weight: bold;
