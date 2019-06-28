@@ -46,14 +46,14 @@ color: rgb(66, 65, 65);
 }
 
 footer{
-    padding:20px;
+    padding:2px;
 }
 .card {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.212);
     padding: 16px;
     text-align: left;
     background-color:#f1f1f167;
-    width: 100%;
+    width: 30%;
   }
 
 .heading{
