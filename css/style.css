@@ -18,6 +18,17 @@ body{
     display: table;
     clear: both;
   }
+
+.w3-custom,.w3-hover-custom:hover{color:#fff!important;background-color:#242222f8!important}
+
+
+  a {
+    color: rgba(0, 0, 255, 0.644);
+  }
+
+  a:visited {
+    color:rgba(0, 0, 255, 0.644);
+  }
 #leftArea{
     padding: 20px;
     text-align: center;
