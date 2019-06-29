@@ -23,11 +23,11 @@ body{
 
 
   a {
-    color: rgba(0, 0, 255, 0.644);
+    color:#0000EE;
   }
 
   a:visited {
-    color:rgba(0, 0, 255, 0.644);
+    color:#0000EE;
   }
 #leftArea{
     padding: 20px;
