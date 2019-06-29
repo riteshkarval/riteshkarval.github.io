@@ -51,8 +51,8 @@
 
             <main>
                <div>
-                   <h1><b>“A novel approach to on-line handwriting recognition based on bidirectional long short-term memory 
-                        networks” by Alex Graves et al.</b>
+                   <h1><b>The implementation of “A novel approach to on-line handwriting recognition based on bidirectional long short-term memory 
+                        networks” and the obtained results.</b>
                    </h1>
                 </div>
                 <div class="row">
@@ -65,8 +65,7 @@
                         and Chromebooks with styluses. 
                     </p><br/>
                     <p>
-                        Here the implementation of “A novel approach to on-line handwriting recognition based on bidirectional long short-term memory 
-                        networks” and the obtained results has been discussed. In the following sections dataset, model architecture and results has been discussed. 
+                        Paper <a href="http://www.i6.in.tum.de/Main/Publications/Liwicki2007a.pdf", target="_blank">link</a>
                     </p>
                 </div>
                 <div class="row">
@@ -77,22 +76,10 @@
                         from 221 writers. The dataset has 13,049 lines of text which has 86,272 word instances and 
                         forms a vocabulary of length 11,059. 
                     </p><br/>
-                    <center>
-                    <figure>
-                      <img src="IAM_recording.jpeg" alt="Trulli" style="width:30%">
-                      <figcaption>Fig.1 - Illustration of IAM-on-DB data recording.</figcaption>
-                    </figure> <br/>
-                    </center>
+                    
                     <p>
-                        The eBeam interface2 is used for recording the handwriting. It allows the user to 
-                        write on a whiteboard with a normal pen in a special casing, which sends infrared signals to 
-                        a triangular receiver mounted in one of the corners of the whiteboard. The acquisition interface 
-                        outputs a sequence of (x,y)-coordinates representing the location of the tip of the pen together 
-                        with a time stamp for each location. The frame rate of the recordings varies from 30 to 70 frames 
-                        per second. 
-                    </p>
-                    <p>
-                        The IAM online handwriting data can be downloaded from <a href="http://www.fki.inf.unibe.ch/databases/iam-on-line-handwriting-database" target="_blanl">here</a>
+                        More details about the IAM-On-DB can be read <a href="https://ieeexplore.ieee.org/document/1575685", target="_blank">here</a> <br/>
+                        To dowload the dataset, kindly <a href="http://www.fki.inf.unibe.ch/databases/iam-on-line-handwriting-database" target="_blanl">check</a>
                     </p>
                     </div>
                         <p>
@@ -127,7 +114,7 @@
                     <center>
                         <figure>
                             <img src="Grave_2007.png" alt="Trulli" style="width:40%">
-                            <figcaption>Fig.2 - BLSTM model for online HTR.</figcaption>
+                            <figcaption>Fig.1 - BLSTM model for online HTR.</figcaption>
                         </figure>
                     </center>
                     <h3><b>2.2: Decoding</b></h3>
@@ -138,24 +125,25 @@
                 <div class="row">
                         <h2> <b>3: Results:</b> </h2>
                         <p>
-                                <t>Training was stopped when performance ceased to improve on the validation set(96 epochs in our case). Reduction in loss can be seen in Fig:2.  
+                                <t>Training was stopped when performance ceased to improve on the validation set(96 epochs in our case). Reduction in CTC loss during training can be seen in Fig:2.  
                                 After training the model was evaluated on the Test dataset, the model performs with a character error rate of ~35%.
                         </p>
                         <center>
                         <figure>
                                 <img src="Grave_training_graph.png" alt="Trulli" style="width:40%">
-                                <figcaption>Fig.3 - Training graph of HTR model.</figcaption>
+                                <figcaption>Fig.2 - Training graph of HTR model.</figcaption>
                         </figure>
                         </center>
-                        <h3><b>3.1: Comparision with recent works</b></h3>
+                        <h3><b>3.1: Comparision of CER with recent works</b></h3>
                         <p>
                             After training the model for 96, character error rate of ~35% has been achieved. Beyond 96 epochs the model find to be overfit on the training
                             data as the training was decreasing but validation loss was increasing. In 2019 Goolge has reported the lowest character error rate on IAM-On-DB i.e.
-                            4.02 and introduced the importance of Bezier Curve in online handwriting recognition. Below is the comparison of this implementation with the recent 
-                            benchmarks on IAM-On-DB. 
+                            4.02 and introduced the importance of Bezier Curve in online handwriting recognition. <br/>
+                            Below is the comparison of character error rate on  on IAM-On-DB of this implementation with the recent works.
                         </p>
                         <center>
-                                <table>
+                                <table id='table_caption'>
+                                        <caption>Table:1 Comparision of character error rate on IAM-On-DB with recent works</caption>
                                     <tr>
                                         <th>System</th>
                                         <th>CER[%]</th>
@@ -193,7 +181,8 @@
                             predictions made by model on the test dataset. 
                         </p>
                         <center>
-                                <table>
+                                <table id='table_caption'>
+                                        <caption>Table:2 Model output comparison with the ground truth</caption>
                                     <tr>
                                         <th>Ground truth</th>
                                         <th>Model Output</th>
