@@ -6,7 +6,7 @@
         <link rel="stylesheet" type="text/css" href="../css/bootswatch.css"/>
         <link rel="stylesheet" type="text/css" href="../css/style.css"/>
         <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
-        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
     </head>
     <style>
             table, td, th {  
@@ -51,32 +51,148 @@
             </header>
 
             <main>
-               <div class="card_row">
-                   <!--Next card under this div use card column-->  
-                   <div class="card_column">
-                    <div class="w3-card-4" style="width:100%;">
-                        <header class="w3-container w3-white">
-                            <h3 class="heading">A novel approach to on-line handwriting recognition based on bidirectional long short-term memory networks</h3>
-                        </header>
-                    
-                        <div class="w3-container">
-                            <p>
-                                    Due to increasing number of people in emerging markets are obtaining access to computing devices, 
-                                    many exclusively using mobile devices with touchscreens online handwriting recognition has recently been 
-                                    gaining importance. Many of these users have native languages and scripts that are not as easily typed as English,...
-                            </p>
-                        </div>
-                    
-                        <footer class="w3-container w3-white">
-                            <h6 class="footer_left"><a href='https://riteshkarval.github.io/Paper_Implementations/Grave_2007/', target="_blank">read more</a></h6>
-                            <h6 class="footer_right">29/06/2019</h6>
-                        </footer>
-                    </div>
-                    </div>
-                                      
-                </div>
+                <button class="collapsible">
+                        <h4 class="heading">"Next report will appear here..."</h4>
+                        <!--Copy and paste new block to write next report Next card under this div use card column--> 
+                </button>
+                <div class="content">
 
-                
+                </div>
+                <p></p>
+               <button class="collapsible"><h4 class="heading">"A novel approach to on-line handwriting recognition based on bidirectional 
+                   long short-term memory networks"</h4>(29/06/19)</button> 
+               <div class="content">
+                    <br/>
+                    <p>
+                        This implementation adress the problem of recognizing text written on a touch eanabled devices.
+                    </p>
+                    <p>
+                        The digital touch enabled devices captures the handwritten input in form of points, which makes it the problem of sequence of points to
+                        the sequence of characters generation. Each input x is a sequence points features(described in section 2.1),
+                        and output y is a sequence of characters and the maximum output sequence is 36 chars. RNNs are cabable of learning a sequence to sequence mappinng, 
+                        Bi-LSTMs have been used to design the model(fig 1). 
+
+                        
+                    </p>
+                    <h3> <b>1: Dataset:</b> </h3>
+                    <p>
+                        To train the online handwriting recognition system IAM-on-DB has been used which has writing samples
+                        from 221 writers. The dataset has 13,049 lines of text which has 86,272 word instances and 
+                        forms a vocabulary of length 11,059. 
+                    </p>
+                    <p>
+                        More details about the IAM-On-DB can be read <a href="https://ieeexplore.ieee.org/document/1575685", target="_blank">here</a> <br/>                    </p>
+                        <p>
+                            The dataset is further divided into four sets(Training set, validation set, test set 1, test set 2) 
+                            in a ratio of 6:2:1:1.
+                        </p><br/>
+                            <img  class="img_left"   src='Grave_2007/Grave_2007.png' width="40%"> 
+                            <h3 class="heading">2: Model:</h3>
+                            <p>
+                                    The model takes a matrix of size 1942x10 as input(1942 is maximum timesteps for a line and 10 is the length of feature vector). The model has two layers of Bi-directional LSTM having the same no of cells in both 
+                                    forward and backward direction. Each layer of BLSTM has 64 cells. The output of second BLSTM layer 
+                                    has been feeded into a dense layer of size 64(63 characters and one CTC blank) having a softmax activation. To measure the network performance CTC loss has been used.
+                            </p>
+                            <p>
+                                    The network weights were initialized with a Gaussian distribution of mean 0 and std. deviation 0.1. The network was trained with online gradient descent with momentum, using a 
+                                    learning rate of 1e−4 and a momentum of 0.9. 
+                            </p>
+                            <h3 class='heading'>2.1: Input Features</h3>
+                            Pen-up/pen-down,Hat-feature, Speed, X-coordinate, Y-coordinate, Writing direction, Curvature,
+                            Vicinity slope, Vicinity curliness, Vicinity linearity.
+                            <h3><b>2.2: Decoding</b></h3>
+                            <p>
+                                The output of the softmax layer is a sequence of T time steps of (C + 1) classes that were decoded using CTC decoding.
+                            </p>
+                            <h2> <b>3: Results:</b> </h2>
+                            <p>
+                                    <t>Training was stopped when performance ceased to improve on the validation set(96 epochs in our case). Reduction in CTC loss during training can be seen in Fig:2.  
+                                    After training the model was evaluated on the Test dataset, the model performs with a character error rate of ~35%.
+                            </p>
+
+                    <img class="img_right" src="Grave_2007/Grave_training_graph.png" alt="Trulli" style="width:40%">
+                    <h3><b>3.1: Comparision of CER with recent works</b></h3>
+                    <p>
+                        After training the model for 96, character error rate of ~35% has been achieved. Beyond 96 epochs the model find to be overfit on the training
+                        data as the training was decreasing but validation loss was increasing. In 2019 Goolge has reported the lowest character error rate on IAM-On-DB i.e.
+                        4.02 and introduced the importance of Bezier Curve in online handwriting recognition. <br/>
+                        Below is the comparison of character error rate on  on IAM-On-DB of this implementation with the recent works.
+                    </p>
+                    <center>
+                            <table id='table_caption'>
+                                    <caption>Table:1 Comparision of character error rate on IAM-On-DB with recent works</caption>
+                                <tr>
+                                    <th>System</th>
+                                    <th>CER[%]</th>
+                                </tr>
+                                <tr>
+                                    <td>Graves et al. BLSTM - 2007</td>
+                                    <td>~15</td>
+                                </tr>
+                                <tr>
+                                    <td>Graves et al. BLSTM - 2009</td>
+                                    <td>11.5</td>
+                                </tr>
+                                <tr>
+                                    <td>Frinken et al. BLSTM - 2015</td>
+                                    <td>12.3</td>
+                                </tr>
+                                <tr>
+                                    <td>Keysers et al. BLSTM - 2017</td>
+                                    <td>8.8</td>
+                                </tr>
+                                <tr>
+                                    <td>Carbune, Victor, et al. - 2019</td>
+                                    <td>4.02</td>
+                                </tr>
+                                <tr>
+                                    <td>this implementation</td>
+                                    <td>34.5</td>
+                                </tr>
+                            </table>
+                    </center>
+
+                    <h3> <b>3.2: Model output samples:</b> </h3>
+                    <p>
+                        After training the model was tested on the test dataset, the model's softmax output was feeded inito CTC decoder for decoding. Here are some 
+                        predictions made by model on the test dataset. 
+                    </p>
+                    <center>
+                            <table id='table_caption'>
+                                    <caption>Table:2 Model output comparison with the ground truth</caption>
+                                <tr>
+                                    <th>Ground truth</th>
+                                    <th>Model Output</th>
+                                </tr>
+                                <tr>
+                                    <td>and now was a digniflied discreet</td>
+                                    <td>and how wal d aguitud  rrdereet</td>
+                                </tr>
+                                <tr>
+                                    <td>hand After all he reflected</td>
+                                    <td>hand A5ter all he reflected</td>
+                                </tr>
+                                <tr>
+                                    <td>with a deadly finality</td>
+                                    <td>htth odedar thodty</td>
+                                </tr>
+                                <tr>
+                                    <td>had sent a letter to Mr Kennedy saying</td>
+                                    <td>had seut altertor Ruhedy say in</td>
+                                </tr>
+                            </table>
+                    </center>
+                    
+                <h3> <b>4: References:</b> </h3>
+                <ol>
+                    <li>Liwicki, Marcus, et al. "A novel approach to on-line handwriting recognition based on bidirectional long short-term memory networks." Proceedings of the 9th International Conference on Document Analysis and Recognition, ICDAR 2007. 2007.</li>	
+                    <li>Frinken, Volkmar, and Seiichi Uchida. "Deep BLSTM neural networks for unconstrained continuous handwritten text recognition." 2015 13th International Conference on Document Analysis and Recognition (ICDAR). IEEE, 2015.</li>
+                    <li>Graves, Alex, et al. "A novel connectionist system for unconstrained handwriting recognition." IEEE transactions on pattern analysis and machine intelligence 31.5 (2008): 855-868.</li>
+                    <li>Keysers, Daniel, et al. "Multi-language online handwriting recognition." IEEE transactions on pattern analysis and machine intelligence 39.6 (2016): 1180-1194.</li>
+                    <li>Carbune, Victor, et al. "Fast Multi-language LSTM-based Online Handwriting Recognition." arXiv preprint arXiv:1902.10525 (2019).</li>
+                    <li>Graves, Alex, et al. "Connectionist temporal classification: labelling unsegmented sequence data with recurrent neural networks." Proceedings of the 23rd international conference on Machine learning. ACM, 2006.</li>
+                </ol>  
+            </div>                
                 
             </main>
 
@@ -89,5 +205,21 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         
         <script src="js/script.js"></script>
+        <script>
+            var coll = document.getElementsByClassName("collapsible");
+            var i;
+
+            for (i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.maxHeight){
+                content.style.maxHeight = null;
+                } else {
+                content.style.maxHeight = content.scrollHeight + "px";
+                } 
+            });
+            }
+        </script>
     </body>
 </html>
